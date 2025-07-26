@@ -1,0 +1,11 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: car-store-api-pdb
+  labels:
+    app: car-store-api
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: car-store-api 

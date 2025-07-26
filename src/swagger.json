@@ -1,0 +1,132 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Car Store API",
+    "version": "1.0.0",
+    "description": "API for managing vehicle sales and payment status."
+  },
+  "paths": {
+    "/api/vehicles": {
+      "post": {
+        "summary": "Create a vehicle",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/VehicleInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Vehicle created" },
+          "400": { "description": "Invalid input" }
+        }
+      }
+    },
+    "/api/vehicles/{id}": {
+      "put": {
+        "summary": "Edit a vehicle",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/VehicleInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Vehicle updated" },
+          "400": { "description": "Invalid input" }
+        }
+      }
+    },
+    "/api/vehicles/{id}/sell": {
+      "post": {
+        "summary": "Sell a vehicle",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SellVehicleInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Vehicle sold" },
+          "400": { "description": "Invalid input" }
+        }
+      }
+    },
+    "/api/vehicles/for-sale": {
+      "get": {
+        "summary": "List vehicles for sale",
+        "responses": {
+          "200": { "description": "List of vehicles" }
+        }
+      }
+    },
+    "/api/vehicles/sold": {
+      "get": {
+        "summary": "List sold vehicles",
+        "responses": {
+          "200": { "description": "List of sold vehicles" }
+        }
+      }
+    },
+    "/api/webhook/payment-status": {
+      "post": {
+        "summary": "Update payment status via webhook",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PaymentStatusInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Payment status updated" },
+          "400": { "description": "Invalid input" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "VehicleInput": {
+        "type": "object",
+        "properties": {
+          "brand": { "type": "string" },
+          "model": { "type": "string" },
+          "year": { "type": "integer" },
+          "color": { "type": "string" },
+          "price": { "type": "number" }
+        },
+        "required": ["brand", "model", "year", "color", "price"]
+      },
+      "SellVehicleInput": {
+        "type": "object",
+        "properties": {
+          "buyerCpf": { "type": "string" },
+          "saleDate": { "type": "string", "format": "date-time" },
+          "paymentCode": { "type": "string" }
+        },
+        "required": ["buyerCpf", "saleDate", "paymentCode"]
+      },
+      "PaymentStatusInput": {
+        "type": "object",
+        "properties": {
+          "paymentCode": { "type": "string" },
+          "status": { "type": "string", "enum": ["pending", "paid", "cancelled"] }
+        },
+        "required": ["paymentCode", "status"]
+      }
+    }
+  }
+} 
