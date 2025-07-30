@@ -1,5 +1,5 @@
 import { VehicleRepository } from '../../domain/VehicleRepository';
-import { InMemoryVehicleRepository } from '../InMemoryVehicleRepository';
+import { DatabaseConfig } from '../config/DatabaseConfig';
 import { CreateVehicle } from '../../application/CreateVehicle';
 import { EditVehicle } from '../../application/EditVehicle';
 import { SellVehicle } from '../../application/SellVehicle';
@@ -34,7 +34,7 @@ export class DependencyContainer {
   }
 
   private initializeDependencies(): void {
-    this.vehicleRepository = new InMemoryVehicleRepository();
+    this.vehicleRepository = DatabaseConfig.getRepository();
     this.paymentGateway = new MockPaymentGateway();
 
     this.createVehicle = new CreateVehicle(this.vehicleRepository);
