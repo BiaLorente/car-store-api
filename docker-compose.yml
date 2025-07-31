@@ -8,4 +8,21 @@ services:
       - .:/app
       - /app/node_modules
     environment:
-      - NODE_ENV=development 
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@db:5432/carstore
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=carstore
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data: 
